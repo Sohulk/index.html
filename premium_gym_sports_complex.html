@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Gym & Sports Complex - 3D Layout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #2d2d2d 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 69, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(45deg, #ff4500, #ff6b35, #ff8c00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(255, 69, 0, 0.5);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            color: #cccccc;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .stat {
+            background: rgba(255, 69, 0, 0.1);
+            padding: 15px 25px;
+            border-radius: 25px;
+            border: 1px solid #ff4500;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .building-3d {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 69, 0, 0.3);
+        }
+
+        .building-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ff4500, #ff6b35, #ff8c00, #ff4500);
+            background-size: 200% 100%;
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { background-position: 200% 0; }
+            50% { background-position: -200% 0; }
+        }
+
+        .building-3d h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ff4500;
+            font-size: 2.2em;
+            text-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+        }
+
+        .isometric-view {
+            position: relative;
+            height: 500px;
+            margin: 30px 0;
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+
+        .floor {
+            position: absolute;
+            width: 100%;
+            height: 200px;
+            border: 3px solid #ff4500;
+            border-radius: 15px;
+            transform-style: preserve-3d;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .floor:hover {
+            transform: rotateY(8deg) rotateX(5deg) scale(1.03);
+            box-shadow: 0 20px 40px rgba(255, 69, 0, 0.3);
+        }
+
+        .ground-floor {
+            top: 250px;
+            background: linear-gradient(45deg, #2a2a2a, #3a3a3a);
+            z-index: 2;
+        }
+
+        .first-floor {
+            top: 50px;
+            background: linear-gradient(45deg, #3a3a3a, #4a4a4a);
+            z-index: 1;
+        }
+
+        .floor-label {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            background: linear-gradient(45deg, #ff4500, #ff6b35);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1em;
+            box-shadow: 0 5px 15px rgba(255, 69, 0, 0.4);
+        }
+
+        .floor-content {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            bottom: 15px;
+            left: 200px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 0.9em;
+            line-height: 1.5;
+            backdrop-filter: blur(10px);
+        }
+
+        .floor-content strong {
+            color: #ff6b35;
+            font-size: 1.1em;
+        }
+
+        .structural-elements {
+            position: absolute;
+            right: 25px;
+            top: 25px;
+            bottom: 25px;
+            width: 40px;
+            background: linear-gradient(to bottom, #555, #777);
+            border-radius: 8px;
+            border: 2px solid #ff4500;
+        }
+
+        .structural-elements::before {
+            content: 'STAIRS';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%) rotate(90deg);
+            font-size: 10px;
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .floor-plans {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        .floor-plan {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 69, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .floor-plan::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 69, 0, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .floor-plan:hover::before {
+            left: 100%;
+        }
+
+        .floor-plan:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(255, 69, 0, 0.2);
+        }
+
+        .floor-plan h3 {
+            color: #ff4500;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            border-bottom: 3px solid #ff4500;
+            padding-bottom: 15px;
+            position: relative;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .zone {
+            background: rgba(255, 69, 0, 0.1);
+            border: 2px solid #ff4500;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .zone::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 69, 0, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .zone:hover::before {
+            transform: translateX(100%);
+        }
+
+        .zone:hover {
+            background: rgba(255, 69, 0, 0.2);
+            transform: scale(1.05) rotateY(5deg);
+            box-shadow: 0 10px 25px rgba(255, 69, 0, 0.3);
+        }
+
+        .zone.powerlifting { border-color: #e74c3c; background: rgba(231, 76, 60, 0.1); }
+        .zone.cardio { border-color: #3498db; background: rgba(52, 152, 219, 0.1); }
+        .zone.functional { border-color: #2ecc71; background: rgba(46, 204, 113, 0.1); }
+        .zone.sports { border-color: #f39c12; background: rgba(243, 156, 18, 0.1); }
+        .zone.amenity { border-color: #9b59b6; background: rgba(155, 89, 182, 0.1); }
+
+        .zone-title {
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+
+        .zone-size {
+            color: #ff6b35;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .features {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 69, 0, 0.2);
+        }
+
+        .features strong {
+            color: #ff6b35;
+        }
+
+        .specs-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .spec-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border: 2px solid #ff4500;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .spec-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255, 69, 0, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .spec-card:hover::before {
+            opacity: 1;
+        }
+
+        .spec-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(255, 69, 0, 0.3);
+        }
+
+        .spec-card h4 {
+            color: #ff4500;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .spec-card p {
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        .budget-section {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 40px;
+            border: 2px solid #ff4500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .budget-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(255, 69, 0, 0.05) 0%, transparent 70%);
+        }
+
+        .budget-section h3 {
+            color: #ff4500;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2em;
+            text-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+        }
+
+        .budget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .budget-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 69, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 69, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .budget-item:hover {
+            background: rgba(255, 69, 0, 0.2);
+            transform: translateX(5px);
+        }
+
+        .budget-item.total {
+            background: linear-gradient(45deg, #ff4500, #ff6b35);
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .orientation-guide {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 1px solid rgba(255, 69, 0, 0.3);
+        }
+
+        .orientation-guide h4 {
+            color: #ff4500;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        .orientation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .orientation-item {
+            background: rgba(255, 69, 0, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 69, 0, 0.3);
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .layout-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .layout-grid {
+                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            }
+        }
+
+        .glow-effect {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 69, 0, 0.5);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(255, 69, 0, 0.8);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PREMIUM GYM & SPORTS COMPLEX</h1>
+            <p>Raw Warehouse Aesthetics | Cbum-Inspired Design</p>
+            <p>800 Gaj Plot (7200 sq ft) | 2-Level Vertical Design</p>
+            <div class="stats">
+                <div class="stat">Total Built-up: 14,400 sq ft</div>
+                <div class="stat">Budget: ₹80-85 Lakhs</div>
+                <div class="stat">Commercial Ready</div>
+            </div>
+        </div>
+
+        <div class="main-layout">
+            <div class="building-3d">
+                <h2>3D Isometric View</h2>
+                <div class="isometric-view">
+                    <div class="floor first-floor">
+                        <div class="floor-label">ROOFTOP ARENA</div>
+                        <div class="floor-content">
+                            <strong>Sports Complex</strong><br>
+                            • Box Cricket Arena (3600 sq ft)<br>
+                            • 5v5 Football Turf (3600 sq ft)<br>
+                            • Professional LED Lighting<br>
+                            • Safety Netting & Boundaries<br>
+                            • Dugout/Seating Areas
+                        </div>
+                        <div class="structural-elements"></div>
+                    </div>
+                    <div class="floor ground-floor">
+                        <div class="floor-label">GROUND FLOOR</div>
+                        <div class="floor-content">
+                            <strong>Premium Gym</strong><br>
+                            • Powerlifting Zone (2000 sq ft)<br>
+                            • Cardio & Machines (2000 sq ft)<br>
+                            • Functional Training (1500 sq ft)<br>
+                            • Turf Sled Lane (800 sq ft)<br>
+                            • Smoothie Bar & Amenities
+                        </div>
+                        <div class="structural-elements"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="floor-plans">
+                <div class="floor-plan">
+                    <h3>Ground Floor - Premium Gym (7200 sq ft)</h3>
+                    <div class="layout-grid">
+                        <div class="zone powerlifting">
+                            <div class="zone-title">Powerlifting Zone</div>
+                            <div class="zone-size">2000 sq ft</div>
+                        </div>
+                        <div class="zone cardio">
+                            <div class="zone-title">Cardio & Machines</div>
+                            <div class="zone-size">2000 sq ft</div>
+                        </div>
+                        <div class="zone functional">
+                            <div class="zone-title">Functional Training</div>
+                            <div class="zone-size">1500 sq ft</div>
+                        </div>
+                        <div class="zone functional">
+                            <div class="zone-title">Turf Sled Lane</div>
+                            <div class="zone-size">800 sq ft</div>
+                        </div>
+                        <div class="zone amenity">
+                            <div class="zone-title">Smoothie Bar</div>
+                            <div class="zone-size">300 sq ft</div>
+                        </div>
+                        <div class="zone amenity">
+                            <div class="zone-title">Changing Rooms</div>
+                            <div class="zone-size">600 sq ft</div>
+                        </div>
+                    </div>
+                    <div class="features">
+                        <strong>Raw Warehouse Features:</strong> Exposed steel beams, industrial concrete floors, matte black equipment, Edison bulb lighting, brick accent walls, high ceilings (14ft), premium powerlifting platforms, Olympic barbells, full dumbbell range up to 200lbs
+                    </div>
+                </div>
+
+                <div class="floor-plan">
+                    <h3>First Floor - Rooftop Sports Arena (7200 sq ft)</h3>
+                    <div class="layout-grid">
+                        <div class="zone sports">
+                            <div class="zone-title">Box Cricket Arena</div>
+                            <div class="zone-size">3600 sq ft</div>
+                        </div>
+                        <div class="zone sports">
+                            <div class="zone-title">5v5 Football Turf</div>
+                            <div class="zone-size">3600 sq ft</div>
+                        </div>
+                    </div>
+                    <div class="features">
+                        <strong>Professional Features:</strong> Premium synthetic turf, 6-meter height safety netting, LED floodlights (500 lux), boundary walls, scoreboard systems, dugout seating for 20 people, equipment storage, drainage system, anti-slip flooring
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="specs-container">
+            <div class="spec-card glow-effect">
+                <h4>Structural Design</h4>
+                <p>RCC slab construction<br>Load bearing: 500 kg/m²<br>Earthquake resistant<br>Premium waterproofing<br>Thermal insulation</p>
+            </div>
+            <div class="spec-card">
+                <h4>Ventilation & Airflow</h4>
+                <p>Industrial exhaust fans<br>Cross ventilation design<br>Air circulation system<br>Fresh air intake<br>Humidity control</p>
+            </div>
+            <div class="spec-card">
+                <h4>Safety & Security</h4>
+                <p>Fire safety systems<br>Emergency exits<br>CCTV surveillance<br>Access control<br>First aid station</p>
+            </div>
+            <div class="spec-card">
+                <h4>Power & Utilities</h4>
+                <p>200 KVA power backup<br>LED lighting throughout<br>High-speed WiFi<br>Music system<br>Water purification</p>
+            </div>
+        </div>
+
+        <div class="orientation-guide">
+            <h4>Optimal Commercial Orientation</h4>
+            <div class="orientation-grid">
+                <div class="orientation-item">
+                    <strong>Entry Direction:</strong> North-facing main entrance for maximum visibility and foot traffic
+                </div>
+                <div class="orientation-item">
+                    <strong>Gym Layout:</strong> East-west orientation for natural light distribution and energy efficiency
+                </div>
+                <div class="orientation-item">
+                    <strong>Sports Arena:</strong> North-south alignment to minimize sun glare during peak hours
+                </div>
+                <div class="orientation-item">
+                    <strong>Parking:</strong> Front and side access for 25+ vehicles including premium spots
+                </div>
+            </div>
+        </div>
+
+        <div class="budget-section">
+            <h3>Detailed Budget Breakdown</h3>
+            <div class="budget-grid">
+                <div class="budget-item">
+                    <span>Civil & Structural Work</span>
+                    <span>₹30-35L</span>
+                </div>
+                <div class="budget-item">
+                    <span>Premium Gym Equipment</span>
+                    <span>₹25-30L</span>
+                </div>
+                <div class="budget-item">
+                    <span>Sports Arena Setup</span>
+                    <span>₹15-18L</span>
+                </div>
+                <div class="budget-item">
+                    <span>Electrical & Lighting</span>
+                    <span>₹8-10L</span>
+                </div>
+                <div class="budget-item">
+                    <span>Interiors & Finishing</span>
+                    <span>₹12-15L</span>
+                </div>
+                <div class="budget-item total">
+                    <span>Total Project Cost</span>
+                    <span>₹80-85L</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Floor hover effects
+            const floors = document.querySelectorAll('.floor');
+            floors.forEach(floor => {
+                floor.addEventListener('mouseenter', function() {
+                    this.style.transform = 'rotateY(12deg) rotateX(8deg) scale(1.05)';
+                    this.style.zIndex = '10';
+                });
+                floor.addEventListener('mouseleave', function() {
+                    this.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+                    this.style.zIndex = this.classList.contains('ground-floor') ? '2' : '1';
+                });
+            });
+
+            // Staggered animation for zones
+            const zones = document.querySelectorAll('.zone');
+            zones.forEach((zone, index) => {
+                setTimeout(() => {
+                    zone.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s both`;
+                }, index * 100);
+            });
+
+            // Spec cards entrance animation
+            const specCards = document.querySelectorAll('.spec-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'slideInUp 0.6s ease-out forwards';
+                    }
+                });
+            });
+
+            specCards.forEach(card => {
+                observer.observe(card);
+            });
+
+            // Budget items counter animation
+            const budgetItems = document.querySelectorAll('.budget-item');
+            budgetItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.animation = `slideInRight 0.5s ease-out ${index * 0.1}s both`;
+                }, index * 150);
+            });
+        });
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(-30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
